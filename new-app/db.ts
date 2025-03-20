@@ -1,0 +1,16 @@
+import { PrismaClient } from "@prisma/client/extension";
+
+const PrismaClientSingleton = () => {
+    console.log("prisma client instantiated")
+    return new PrismaClient()
+}
+
+declare global {
+    var prisma: undefined | ReturnType<typeof PrismaClientSingleton>
+
+}
+
+const prisma  = globalThis.prisma || PrismaClientSingleton()
+
+export default prisma
+if(process.env.NODE_ENV !== 'production') globalThis.prisma = prisma
